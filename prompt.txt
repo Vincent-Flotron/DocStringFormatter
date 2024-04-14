@@ -1,0 +1,102 @@
+
+write ma a hta in vbscript that will help me to format well the method's documentation which appear as comments below the methods declaration.
+It will use a Template from a file template.txt like below with it's variables written starting with a $ and their default values after the equal sign:
+
+# Template
+    /* Description -----------------------------------------------------------*/
+    /*                                                                        */
+    /* $Description = ''                                                      */
+    /*                                                                        */
+    /* Notes -----------------------------------------------------------------*/
+    /*                                                                        */
+    /* $Notes = ''                                                            */
+    /*                                                                        */
+    /* Parameters ------------------------------------------------------------*/
+    /*                                                                        */
+    /* $Parameters = '<none>'                                                 */
+    /*                                                                        */
+    /* Examples --------------------------------------------------------------*/
+    /*                                                                        */
+    /* $Examples = ''                                                         */
+    /*                                                                        */
+    /*------------------------------------------------------------------------*/
+    
+
+
+
+
+
+
+
+
+
+
+
+It will the take a method's declaration like below:
+```Progress
+  method public void findLatLng
+    ( input  iphRoot as handle,
+      output opdLat  as decimal,
+      output opdLng  as decimal ):
+```
+
+It will then use the template. The template's parameter $Parameters will be replaced by result from the regex applyed to it the method's declaration this way:
+
+- Regex to apply to methods lines to get its parameters
+(?<io>input|input-output|output|)\s*(?<param>[\w|-]+)\s+as\s+(?<type>[\w|-]+)
+
+- How to fill Parameters with values from the regex
+```Progress
+$Parameters = &param1 : (&io1=output?'returns':'')
+              &param2 : (&io2=output?'returns':'')
+              &paramn : (&ion=output?'returns':'')
+```
+
+- Example with this method's declaration as parameter:
+  - input:
+    ```Progress
+      method public void findLatLng
+        ( input  iphRoot as handle,
+          output opdLat  as decimal,
+          output opdLng  as decimal ):
+    ```
+
+  - result:
+    ```Progress
+        iphRoot : $par1
+        opdLat  : $par2
+        opdLng  : $par3
+    ```
+
+
+At every template's variables will appear a text area that I could fill.
+It will give them values.
+
+
+
+
+
+# example of output
+  method public void findLatLng
+    ( input  iphRoot as handle,
+      output opdLat  as decimal,
+      output opdLng  as decimal ):
+    /* Description -----------------------------------------------------------*/
+    /*                                                                        */
+    /* Description get from the Description's textarea                        */
+    /*                                                                        */
+    /* Notes -----------------------------------------------------------------*/
+    /*                                                                        */
+    /* Note get from the Notes's textarea                                     */
+    /*                                                                        */
+    /* Parameters ------------------------------------------------------------*/
+    /*                                                                        */
+    /* iphRoot : description get from the par1's textarea                     */
+    /* opdLat  : description get from the par2's textarea                     */
+    /* opdLng  : description get from the par3's textarea                     */
+    /*                                                                        */
+    /* Examples --------------------------------------------------------------*/
+    /*                                                                        */
+    /* example get from the Examples's textarea                               */
+    /*                                                                        */
+    /*------------------------------------------------------------------------*/

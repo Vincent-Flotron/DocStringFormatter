@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Method Documentation Formatter</title>
+	<hta:application id="MethodDocFormatter" applicationname="yes">
+</head>
+<script language="vbscript">
+' Function to read the template from a file
+Function ReadTemplateFromFile(templateFile)
+    Dim fso, templateStream
+    Set fso = CreateObject("Scripting.FileSystemObject")
+    If fso.FileExists(templateFile) Then
+        Set templateStream = fso.OpenTextFile(templateFile)
+        ReadTemplateFromFile = templateStream.ReadAll
+        templateStream.Close
+    Else
+        MsgBox "Template file not found!", vbExclamation
+        ReadTemplateFromFile = ""
+    End If
+End Function
+
+' Function to fill the template with values
+Function FillTemplate(template, description, notes, parameters, examples)
+    FillTemplate = Replace(template, "$Description = ''", description)
+    FillTemplate = Replace(FillTemplate, "$Notes = ''", notes)
+    FillTemplate = Replace(FillTemplate, "$Parameters = '<none>'", parameters)
+    FillTemplate = Replace(FillTemplate, "$Examples = ''", examples)
+End Function
+
+' Function to extract method parameters from method declaration
+Function ExtractParameters(methodDeclaration)
+    Dim regex, matches, match, parameters, io, param, par_type, return_txt
+    Set regex = New RegExp
+    regex.Pattern = "(input|input-output|output|)\s*([\w|-]+)\s+as\s+([\w|-]+)"
+    regex.Global = True
+    Set matches = regex.Execute(methodDeclaration)
+    parameters = ""
+    For Each match In matches
+        io = Trim(match.SubMatches(0))
+        param = Trim(match.SubMatches(1))
+        par_type = Trim(match.SubMatches(2))
+		MsgBox io
+		MsgBox param
+		MsgBox par_type
+		
+		If io = "output" Then
+			return_txt = "returns"
+		Else
+			return_txt = ""
+		End If
+		
+		parameters = parameters & vbCrLf & param & " : " & return_txt & " (" & par_type & ")"
+
+    Next
+    ExtractParameters = parameters
+End Function
+
+' Function to handle button click event
+Sub FormatMethodDocumentation()
+    Dim methodDeclaration, description, notes, examples, parameters, template
+    methodDeclaration = document.getElementById("methodDeclaration").value
+    description = document.getElementById("description").value
+    notes = document.getElementById("notes").value
+    examples = document.getElementById("examples").value
+    
+    ' Extract parameters from method declaration
+    parameters = ExtractParameters(methodDeclaration)
+    
+    ' Read template from file
+    templateFile = "template.txt" ' Change this to your template file path
+    template = ReadTemplateFromFile(templateFile)
+    
+    ' Fill template with values
+    filledTemplate = FillTemplate(template, description, notes, parameters, examples)
+    
+    ' Display filled template
+    document.getElementById("formattedDocumentation").innerText = filledTemplate
+	
+	
+	document.getElementById("parameters").innerText = parameters
+End Sub
+</script>
+<body>
+    <h2>Method Documentation Formatter</h2>
+    <p>Enter method declaration:</p>
+    <textarea id="methodDeclaration" rows="5" cols="50"></textarea>
+    <br><br>
+    <p>Enter description:</p>
+    <textarea id="description" rows="2" cols="50"></textarea>
+    <br><br>
+    <p>Enter notes:</p>
+    <textarea id="notes" rows="2" cols="50"></textarea>
+    <br><br>
+    <p>Enter examples:</p>
+    <textarea id="examples" rows="2" cols="50"></textarea>
+    <br><br>
+    <p>Enter parameters:</p>
+    <textarea id="parameters" rows="5" cols="50"></textarea>
+    <br><br>
+    <button onclick="FormatMethodDocumentation()">Format Documentation</button>
+    <br><br>
+    <pre id="formattedDocumentation"></pre>
+</body>
+</html>

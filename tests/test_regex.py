@@ -1,4 +1,5 @@
 import re
+from datetime import datetime
 
 class Position:
     def __init__(self, start, end):
@@ -117,18 +118,10 @@ class Doc_String:
 
     def update_variable(self, variable, text):
         self._variables[variable].set_text(text)
-        # self.place_value(variable)
 
     def place_values(self):
-        to_insert = ''
         for var_name, var in reversed(self._variables.items()):
             self.place_value(var_name)
-            # to_insert = ''
-            # for line in var.get_lines():
-            #     to_insert += '/*' + ' '*var.get_offset() + line + ''*( self._width - var.get_offset() - len(line) ) + '*/\r\n'
-            # self._doc_string.replace_by_position( var.get_line_pos().get_start(),
-            #                                       var.get_line_pos().get_end(),
-            #                                       to_insert )
 
     def place_value(self, variable):
         var = self._variables[variable]
@@ -142,6 +135,28 @@ class Doc_String:
         
     def get_doc_string(self):
         return self._doc_string
+    
+    def read_template_from_file():
+        text = ''
+        try:
+            text = File_Manager.read_file('template'.txt)
+        except FileNotFoundError as e:
+            View.display(e)
+
+
+class File_Manager:
+    def read_file(file_path):
+        try:
+            with open(file_path, 'r') as f:
+                return f.read()
+        except FileNotFoundError:
+            raise FileNotFoundError("File '{file_path}' not found!")
+
+
+class View:
+    def display(text):
+        print( f'{datetime.now().strftime("%Y.%m.%d %H:%M:%S.%f")}: {text}')
+
 
 # Sample text
 text = '''

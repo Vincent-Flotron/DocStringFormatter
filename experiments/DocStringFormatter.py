@@ -20,13 +20,14 @@ def fill_template(template, description, notes, parameters, examples):
 def extract_parameters(method_declaration):
     regex = re.compile(r"(input|input-output|output|)\s*([\w|-]+)\s+as\s+([\w|-]+)")
     matches = regex.findall(method_declaration)
+    parameters = []
     parameters = ""
     for io, param, par_type in matches:
         io = io.strip()
         param = param.strip()
         par_type = par_type.strip()
         return_txt = "returns" if io == "output" else ""
-        parameters += f"{param} =\n{return_txt} ({par_type})\n"
+        parameters.append((param, return_txt, par_type))
     return parameters
 
 def format_method_documentation():

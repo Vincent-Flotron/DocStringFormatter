@@ -77,18 +77,17 @@ class Doc_String:
         
     def generate_doc_string( self ):
         self._doc_string = self._template
-        for var_name, var in reversed(self._sections.items()):
-            self.place_value(var_name)
+        for name, section in reversed(self._sections.items()):
+            self.place_value(name)
 
-    def place_value( self, section ):
-        var       = self._sections[section]
+    def place_value( self, section_name ):
+        section   = self._sections[section_name]
         to_insert = ''
-        for line in var.get_lines():
-            # to_insert += '/*' + ' '*var.get_offset() + line + ' '*( self._width - var.get_offset() - len(line) ) + '*/\r\n'
-            to_insert += self._comment_start + ' '*var.get_offset() + line + ' '*( self._width - var.get_offset() - len(line) ) + self._comment_end + '\r\n'
+        for line in section.get_lines():
+            to_insert += self._comment_start + ' '*section.get_offset() + line + ' '*( self._width - section.get_offset() - len(line) ) + self._comment_end + '\r\n'
         to_insert        = to_insert[0:-2]
-        self._doc_string = self._doc_string.replace_by_position( var.get_line_pos().get_start(),
-                                                                 var.get_line_pos().get_end(),
+        self._doc_string = self._doc_string.replace_by_position( section.get_line_pos().get_start(),
+                                                                 section.get_line_pos().get_end(),
                                                                  to_insert )
         
     def get_doc_string( self ):

@@ -13,7 +13,7 @@ class Controller:
 
     def edit_setting( self, setting_section, setting_name ):
         previous_value = self._config.get_setting(setting_section, setting_name)
-        # Prompt the user to enter the default text editor
+        # Prompt the user to enter the new value
         text_editor = self._view.ask_for( f"Enter new {setting_name} [{previous_value}] (leave empty to keep current): " ).strip()
         if text_editor != '':
             status_message = self._config.edit_setting( setting_section, setting_name, text_editor )
@@ -31,13 +31,6 @@ class Controller:
     def edit_default_editor( self ):
         self._config.edit_default_editor()
 
-
-    # def edit_default_editor( self ):
-    #     previous_text_editor = self._config.get_default_editor()
-    #     # Prompt the user to enter the default text editor
-    #     text_editor = self._view.ask_for( f"Enter the default text editor [{previous_text_editor}] (leave empty to keep current): " ).strip()
-    #     status_message = self._config.edit_default_editor( text_editor )
-    #     self._view.display(status_message)
 
     # on click button
     # def generate_doc_string( self ):

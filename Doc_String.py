@@ -7,13 +7,17 @@ from File_Manager import File_Manager
 
 class Doc_String:
 
-    def __init__(self, view):
-        self._view         = view
-        template_from_file = self._read_template_from_file()
-        self._doc_string   = String_Enhanced(template_from_file)
-        self._template     = String_Enhanced(template_from_file)
-        self._sections     = dict()
-        self._width        = 0
+    def __init__(self, view, config):
+        self._config        = config
+        self._view          = view
+        template_from_file  = self._read_template_from_file()
+        self._doc_string    = String_Enhanced(template_from_file)
+        self._template      = String_Enhanced(template_from_file)
+        self._sections      = dict()
+        self._width         = 0
+        self._comment_start = config.get_comment_start()   or '/*'
+        self._comment_end   = config.get_comment_end()     or '*/'
+        self._nb_indent     = int(config.get_nb_indent())  or 2
         
         self._var_pat   = r'\$(?P<section>[\w|-|_]+)[ |\t]*=[ |\t]*([\'|"](?P<value_str>(?!\")(?!\').*)?[\'|"]|(?P<value_dec>\d+|\d*\.\d+|\d+\.\d*))'
         self._width_pat = r'(?<=/\*).*(?=\*/)'
@@ -80,7 +84,8 @@ class Doc_String:
         var       = self._sections[section]
         to_insert = ''
         for line in var.get_lines():
-            to_insert += '/*' + ' '*var.get_offset() + line + ' '*( self._width - var.get_offset() - len(line) ) + '*/\r\n'
+            # to_insert += '/*' + ' '*var.get_offset() + line + ' '*( self._width - var.get_offset() - len(line) ) + '*/\r\n'
+            to_insert += self._comment_start + ' '*var.get_offset() + line + ' '*( self._width - var.get_offset() - len(line) ) + self._comment_end + '\r\n'
         to_insert        = to_insert[0:-2]
         self._doc_string = self._doc_string.replace_by_position( var.get_line_pos().get_start(),
                                                                  var.get_line_pos().get_end(),

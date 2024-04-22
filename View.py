@@ -37,6 +37,8 @@ class View:
 
         self._make_menu()
 
+    def ask_for( self, txt ):
+        return input( txt )
     
     def _make_menu( self ):
         # Create a menu bar
@@ -53,6 +55,9 @@ class View:
         menubar.add_cascade(label="Edit", menu=edit_menu)
         edit_menu.add_command(label="Edit Template", command=self._controller.edit_template)
         edit_menu.add_command(label="Edit Default Text Editor", command=self._controller.edit_default_editor)
+        edit_menu.add_command(label="Edit comment start", command=self._controller.edit_comment_start)
+        edit_menu.add_command(label="Edit comment end", command=self._controller.edit_comment_end)
+        edit_menu.add_command(label="Edit nb indentation", command=self._controller.edit_nb_indentation)
 
 
     # def edit_default_editor(self):

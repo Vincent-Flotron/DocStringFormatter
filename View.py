@@ -190,8 +190,10 @@ class Text_Input:
         return self._text
     
     def __del__( self ):
-        self._label.grid_forget()
-        self._entry.grid_forget()
+        if self._label:
+            self._label.grid_forget()
+        if self._entry:
+            self._entry.grid_forget()
     
     def is_parameter( self ):
         return self._is_parameter

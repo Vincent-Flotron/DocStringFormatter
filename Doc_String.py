@@ -82,6 +82,11 @@ class Doc_String:
 
     def place_value( self, section_name ):
         section   = self._sections[section_name]
+
+        # INSERT PARAMETERES HERE
+        if section.has_parameters():
+            self._view.display('# INSERT PARAMETERES HERE')
+
         to_insert = ''
         for line in section.get_lines():
             to_insert += self._comment_start + ' '*section.get_offset() + line + ' '*( self._width - section.get_offset() - len(line) ) + self._comment_end + '\r\n'

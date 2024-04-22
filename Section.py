@@ -67,7 +67,9 @@ class Section:
     
     def get_line_pos(self):
         return self._line_pos
-
+    
+    def has_parameters( self ):
+        return len(self.get_parameters()) > 0
 
 class Parameter:
     def __init__( self, name, text, order = 0 ):

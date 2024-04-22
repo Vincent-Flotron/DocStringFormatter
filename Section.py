@@ -6,7 +6,6 @@ class Section:
         self._text       = text
         self._position   = position
         self._offset     = offset
-        self._text       = ''
         self._line_pos   = line_position
         self._parameters = {}
 

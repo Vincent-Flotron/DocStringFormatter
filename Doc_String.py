@@ -8,12 +8,12 @@ from File_Manager import File_Manager
 class Doc_String:
 
     def __init__(self, view):
-        self._view        = view
-        self._text        = self._read_template_from_file()
-        self._doc_string  = String_Enhanced(self._text)
-        self._template    = String_Enhanced(self._text)
-        self._sections    = dict()
-        self._width       = 0
+        self._view         = view
+        template_from_file = self._read_template_from_file()
+        self._doc_string   = String_Enhanced(template_from_file)
+        self._template     = String_Enhanced(template_from_file)
+        self._sections     = dict()
+        self._width        = 0
         
         self._var_pat   = r'\$(?P<section>[\w|-|_]+)[ |\t]*=[ |\t]*([\'|"](?P<value_str>(?!\")(?!\').*)?[\'|"]|(?P<value_dec>\d+|\d*\.\d+|\d+\.\d*))'
         self._width_pat = r'(?<=/\*).*(?=\*/)'
@@ -41,15 +41,6 @@ class Doc_String:
                                                                  match.span()[0] - com_start_match.span()[0],
                                                                  Position( com_start_match.span()[0] - 2,
                                                                            com_start_match.span()[1] ) )
-
-    # def attach_section(self, var_name, ref_varname, value = ''):
-    #     ref_var = self._sections[ref_varname]
-    #     self._sections[var_name] = Variable( var_name,
-    #                                           value,
-    #                                           ref_var.get_position(),
-    #                                           ref_var.get_offset(),
-    #                                           ref_var.get_line_pos() )
-
 
 
     def add_parameter( self, parameter ):

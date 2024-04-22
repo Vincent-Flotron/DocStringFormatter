@@ -1,6 +1,8 @@
 from datetime import datetime
 import tkinter as tk
+# from tkinter import filedialog
 from tkinter.scrolledtext import ScrolledText
+
 
 class View:
 
@@ -32,6 +34,74 @@ class View:
         self.formatted_documentation_label.pack()
         self.formatted_documentation_text = ScrolledText(self._root, height=10, width=50)
         self.formatted_documentation_text.pack()
+
+        self._make_menu()
+
+    
+    def _make_menu( self ):
+        # Create a menu bar
+        menubar = tk.Menu(self._root)
+        self._root.config(menu=menubar)
+
+        # Create a "File" menu
+        file_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="File", menu=file_menu)
+        file_menu.add_command(label="Exit", command=self._root.quit)
+
+        # Create an "Edit" menu
+        edit_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="Edit", menu=edit_menu)
+        edit_menu.add_command(label="Edit Template", command=self._controller.edit_template)
+        edit_menu.add_command(label="Edit Default Text Editor", command=self._controller.edit_default_editor)
+
+
+    # def edit_default_editor(self):
+    #     # Read the configuration file to retrieve the default text editor setting
+    #     default_editor = self.get_default_editor_from_config()
+
+    #     # Open a file dialog with the initial directory set to the location of the configuration file
+    #     file_path = filedialog.askopenfilename(initialdir=os.path.dirname(config_file),
+    #                                             filetypes=[("Config files", "*.ini")])
+
+    #     if file_path:
+    #         # Update the default text editor configuration in the selected config file
+    #         self.update_default_editor_config(file_path, default_editor)
+
+    # def get_config_file(self):
+    #     # Define the path to the configuration file
+    #     return "config.ini"  # Change this to the actual path of your config file
+
+    # def get_default_editor_from_config(self):
+    #     config_file = self.get_config_file()
+    #     # Read the configuration file to retrieve the default text editor setting
+    #     config = configparser.ConfigParser()
+    #     config.read(config_file)
+
+    #     if 'DEFAULT' in config:
+    #         return config['DEFAULT'].get('text_editor', '')
+    #     else:
+    #         return ''
+
+    # # def update_default_editor_config(self, file_path, default_editor):
+    # def update_default_editor_config(self):
+    #     config_file = self.get_config_file()
+    #     # Create or update the default text editor configuration in the config file
+    #     config = configparser.ConfigParser()
+    #     config.read(config_file)
+
+    #     # Prompt the user to enter the default text editor
+    #     default_editor = input("Enter the default text editor (leave empty to keep current): ").strip()
+
+    #     # Update the config file with the default text editor
+    #     if 'DEFAULT' not in config:
+    #         config['DEFAULT'] = {}
+    #     config['DEFAULT']['text_editor'] = default_editor
+
+    #     # Write the updated config file
+    #     with open(config_file, 'w') as configfile:
+    #         config.write(configfile)
+    #     self.display("Default text editor updated successfully.")
+
         
     def get_text_inputs( self ):
         return self._text_inputs
@@ -55,6 +125,9 @@ class View:
 
     def display(self, text):
         print( f'{datetime.now().strftime("%Y.%m.%d %H:%M:%S.%f")}: {text}')
+
+    # def display(text):
+    #     print( f'{datetime.now().strftime("%Y.%m.%d %H:%M:%S.%f")}: {text}')
 
     def display_sections(self, sections):
         self.clear_parameters_frame()

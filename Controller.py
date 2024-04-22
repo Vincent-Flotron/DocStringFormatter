@@ -1,6 +1,7 @@
 from View import View
 from Doc_String import Doc_String
-
+from File_Manager import File_Manager
+from Config import Config
 
 class Controller:
 
@@ -8,15 +9,18 @@ class Controller:
         self._name    = 'controller'
         self._view    = View( self )
         self._doc_str = Doc_String( self._view )
+        self._config  = Config()
 
-    # def display_variables():
-        
+
+
+    def edit_default_editor( self ):
+        self._view.display(self._config.edit_default_editor())
 
     # on click button
-    def generate_doc_string( self ):
-        method_declaration = self._view.get_method_declaration()
+    # def generate_doc_string( self ):
+    #     method_declaration = self._view.get_method_declaration()
         
-        parameters = self._doc_str.extract_parameters( method_declaration )
+    #     parameters = self._doc_str.extract_parameters( method_declaration )
 
 
         # description        = description_entry.get("1.0", tk.END).strip()
@@ -35,7 +39,7 @@ class Controller:
         self.update_model()
         self._doc_str.generate_doc_string()
         View.update_text(self._view.formatted_documentation_text, self._doc_str.get_doc_string())
-        print('ééééééééééééééééééééééééééééééé')
+        print('#################################')
         print( self._doc_str.get_doc_string() )
     
     def update_model( self ):
@@ -98,6 +102,9 @@ class Controller:
 
         self._view.endless_loop()
 
+    def edit_template( self ):
+        if not File_Manager.open_file_with_text_editor('template.txt', self._config.get_default_editor()):
+            controller._view.display("Unable to determine default text editor.")
 
 # MAIN ---------------------------------------------------------------------------- #
 if __name__ == "__main__":
